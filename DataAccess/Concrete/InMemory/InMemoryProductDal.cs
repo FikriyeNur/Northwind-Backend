@@ -9,12 +9,13 @@ namespace DataAccess.Concrete.InMemory
 {
     public class InMemoryProductDal : IProductDal
     {
+        // bu listemiz bu class için global değişkendir. global değişkenlerin isimlendirmeleri genellikle "_" ile başlar. Buna isimlendirme standartı denir. (naming convention)
         List<Product> _products;
 
-        // Uygulama çalıştığında
+        // Bu proje çalıştığında ilk burası yani constructor metodu çalışır. (yani class'ı new'lediğimizde ilk bu fonksiyon çalışır.) Bunu yapma nedenimiz ise proje çalıştığında bellekte ürün listesi oluşturmak istememizdir.
         public InMemoryProductDal()
         {
-            // Oracle, Sql Server, Postgres, MongoDb vb. veritabanlarıda ki gibi veri çekiyoruz.
+            // Oracle, Sql Server, Postgres, MongoDb vb. veritabanlarıda ki gibi veri çektiğimizi simüle ediyoruz.
             _products = new List<Product>
             {
                 new Product{ProductId=1, CategoryId=1, ProductName="Bardak", UnitsInStock=15, UnitPrice=15},
@@ -32,7 +33,7 @@ namespace DataAccess.Concrete.InMemory
 
         public void Delete(Product product)
         {
-            // _products.Remove(product); // ÇALIŞMAZ!! Bu şekilde listeden asla silinmez. Çünkü referans adresleri aynı değil!!
+            // _products.Remove(product); // ÇALIŞMAZ!! Bu şekilde listeden asla silinmez. Çünkü arayüzden bir ürün (product) new'leyip buraya yolladığımız için referans adresleri aynı değildir. Bu yüzdende SİLİNMEZ!! (Eğer referans değilde değer tip yollasaydık o zaman bu şekilde silinirdi.)
 
             #region Uzun yöntem bunun kısa yolunu LINQ ile yapacağız.
             //Product productToDelete = null;
@@ -42,17 +43,19 @@ namespace DataAccess.Concrete.InMemory
             //    {
             //        productToDelete = p;
             //    }
-            //} 
+            //}
+            //_products.Remove(productToDelete);
             #endregion
 
-            // LINQ - Language Integrated Query
-            Product productToDelete = _products.SingleOrDefault(p => p.ProductId == product.ProductId); // _products içinde tek tek dolaşır ve verdiğimiz koşula göre elemanları bulur.(tek bir eleman bulmaya yarar.)
+            // LINQ - Language Integrated Query (Dile Gömülü Sorgulama)
+            // => Lambda
+            Product productToDelete = _products.SingleOrDefault(p => p.ProductId == product.ProductId); // _products içinde tek tek dolaşır ve verdiğimiz koşula göre istenilen elemanı bulur.(SingleOrDefault: tek bir eleman bulmaya yarar.)
             _products.Remove(productToDelete);
         }
 
         public List<Product> GetAllByCategory(int categoryId)
         {
-          return  _products.Where(p => p.CategoryId == categoryId).ToList();
+            return _products.Where(p => p.CategoryId == categoryId).ToList(); // wherede istediğimiz kadar koşul ekleyebiliriz.
         }
 
         public List<Product> GettAll()
@@ -60,12 +63,11 @@ namespace DataAccess.Concrete.InMemory
             return _products;
         }
 
-
         public void Update(Product product)
         {
-            // Gönderdiğim ürün Id'sine sahip olan listedeki ürünü bul
+            // Gönderdiğim ürün Id'sine sahip olan listedeki ürünü bul demek.
             Product productToUpdate = _products.SingleOrDefault(p => product.ProductId == product.ProductId);
-            // bulunan elemanı güncelliyoruz
+            // ve LINQ sonunda istediğimiz elemanı buluyor ve bizde onu güncelliyoruz
             productToUpdate.ProductName = product.ProductName;
             product.CategoryId = product.CategoryId;
             product.UnitsInStock = product.UnitsInStock;

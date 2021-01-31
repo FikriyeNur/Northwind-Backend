@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.Concrete
 {
-    // Çıplak Class Kalmasın - ÇCK (class'ları interfacelerden implemente ederiz.)
+    // Çıplak Class Kalmasın - ÇCK Standartı (class'ları inheritance etmezsek veya interfaceler'den implemente etmezsek ileride sıkıntılar çıkabilir.)
     public class Category : IEntity
     {
         public int CategoryId { get; set; }

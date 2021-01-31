@@ -5,14 +5,14 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    // Dal - Data Access Layer /  Dao - Data Access Object
-    // interface'lerin operasyonları public kendisi değil!!
+    // Dal - Data Access Layer (.NET) /  Dao - Data Access Object (Java)
+    // interface'lerin operasyonları(metotları) default public, kendisi değil!! Kendisi internal'dır.
     public interface IProductDal
     {
         List<Product> GettAll();
         void Add(Product product);
         void Update(Product product);
         void Delete(Product product);
-        List<Product> GetAllByCategory(int categoryId);
+        List<Product> GetAllByCategory(int categoryId); // Product'ları Category'ye göre filtreleme işlemi
     }
 }

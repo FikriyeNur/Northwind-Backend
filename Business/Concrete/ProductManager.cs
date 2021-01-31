@@ -9,19 +9,19 @@ namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _ProductDal;
+        IProductDal _productDal; // Bu noktada direk olarak herhangi bir veritabanıyla bağlantı kurmadan soyut yapıyla bağlantı kurduk. Artık buradan istediğimiz kısma ulaşabiliriz.
 
         public ProductManager(IProductDal productDal)
         {
-            _ProductDal = productDal;
+            _productDal = productDal;
         }
 
         public List<Product> GetAll()
         {
             // iş kodları ..
-            // yetkisi var mı ?
+            // yetkisi var mı ? (gibi sorgular yazılır)
             // bütün kurallara uyduktan sonra listeyi ekrana döndürebiliriz.
-            return _ProductDal.GettAll();
+            return _productDal.GettAll();
         }
     }
 }
