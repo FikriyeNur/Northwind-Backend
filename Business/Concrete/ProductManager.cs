@@ -23,5 +23,16 @@ namespace Business.Concrete
             // bütün kurallara uyduktan sonra listeyi ekrana döndürebiliriz.
             return _productDal.GettAll();
         }
+
+        public List<Product> GetAllByCategoryId(int id) // filtrelenmiş ürün listesi
+        {
+            return _productDal.GettAll(p => p.CategoryId == id);
+
+        }
+
+        public List<Product> GeyByUnitPrice(decimal min, decimal max)
+        {
+            return _productDal.GettAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
+        }
     }
 }
