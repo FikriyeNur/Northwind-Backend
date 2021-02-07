@@ -1,10 +1,12 @@
-﻿using Entities.Abstract;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace DataAccess.Abstract
+ // Core katmanı diğer katmanları referans almaz. Kimseye bağımlı OLMAZ!!
+ // Core katmanı benim evrensel katmanım olacak. Bütün .Net projelerimde bu projeyi kullanabilirim. Bu sayede kod tekrarında kurtulmuş olacağım. Bütün yapılar generic olarak yapıldı.
+namespace Core.DataAccess                         
 {
     // Generic Constraint: Generic kısıtlama. Bu generic yapıya herkes ulaşamasın diye yani sadece veri tabanı class'larım bu interface'i kullanabilsin diye buraya filtre koydum. 
     // Artık burası sadece referans tip olabilir. IEntity veya IEntity'i implemente eden bir nesne olabilir!!
@@ -16,6 +18,6 @@ namespace DataAccess.Abstract
         T Get(Expression<Func<T, bool>> filter); // filter=null yapmadık çünkü filtre vermek zorundayız. Çünkü bu fonksiyonda filtreye göre bir şeyler çekmek istiyoruz.
         void Add(T entity);
         void Update(T entity);
-        void Delete(T entity);
+        void Delete(T entity);   
     }
 }

@@ -11,28 +11,6 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var product in productManager.GetAll())
-            {
-                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
-            }
-            Console.WriteLine(" ");
-
-            Console.WriteLine("Kategoriye göre filtrelenmiş sonuçlar: ");
-            foreach (var product in productManager.GetAllByCategoryId(2))
-            {
-                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
-            }
-            Console.WriteLine(" ");
-
-            Console.WriteLine("Fiyata göre filtrelenmiş sonuçlar: ");
-            foreach (var product in productManager.GeyByUnitPrice(50,100))
-            {
-                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
-            }
-            Console.WriteLine(" ");
-            Console.ReadLine();
-
             #region InMemoryProductDal
             //ProductManager productManager2 = new ProductManager(new InMemoryProductDal());
             //foreach (var product in productManager2.GetAll())
@@ -42,6 +20,75 @@ namespace ConsoleUI
 
             //Console.ReadLine(); 
             #endregion
+
+            #region Entity Framework
+            //GetAll(productManager);
+            //GetByCategoryId(productManager);
+            //GetByUnitPrice(productManager);
+
+            //OrderTest();
+
+            //CategoryTest();
+
+            ProductManager productManager = new ProductManager(new EfProductDal());
+
+            ProductDetails(productManager);
+
+            #endregion
+
+            Console.ReadLine();
+        }
+
+        private static void ProductDetails(ProductManager productManager)
+        {
+            foreach (var product in productManager.GetProductDetails())
+            {
+                Console.WriteLine($"{product.ProductName} -- {product.CategoryName}");
+            }
+        }
+
+        private static void GetByUnitPrice(ProductManager productManager)
+        {
+            Console.WriteLine("Fiyata göre filtrelenmiş sonuçlar: ");
+            foreach (var product in productManager.GeyByUnitPrice(50, 100))
+            {
+                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
+            }
+        }
+
+        private static void GetByCategoryId(ProductManager productManager)
+        {
+            Console.WriteLine("Kategoriye göre filtrelenmiş sonuçlar: ");
+            foreach (var product in productManager.GetAllByCategoryId(2))
+            {
+                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
+            }
+        }
+
+        private static void GetAll(ProductManager productManager)
+        {
+            foreach (var product in productManager.GetAll())
+            {
+                Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
+            }
+        }
+
+        private static void OrderTest()
+        {
+            OrderManager orderManager = new OrderManager(new EfOrderDal());
+            foreach (var order in orderManager.GetAll())
+            {
+                Console.WriteLine($"{order.OrderId} {order.ShipCity}");
+            }
+        }
+
+        private static void CategoryTest()
+        {
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+            foreach (var category in categoryManager.GetAll())
+            {
+                Console.WriteLine($"{category.CategoryId} -- {category.CategoryName}");
+            }
         }
     }
 }

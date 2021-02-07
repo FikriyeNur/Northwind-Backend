@@ -1,4 +1,6 @@
-﻿using Entities.Concrete;
+﻿using Core.DataAccess;
+using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +11,7 @@ namespace DataAccess.Abstract
     // interface'lerin operasyonları(metotları) default public, kendisi değil!! Kendisi internal'dır.
     public interface IProductDal : IEntityRepository<Product> // IEntityRepository'i Product için oluşturduk. Her class için ortak olan özellikleri bu interface ile tekrar etmeyi bıraktık.
     {
-
+        List<ProductDetailDto> GetProductDetails();
     }
 }
+ // Code Rafactoring -- Kodun iyileştirilmesi
