@@ -41,16 +41,25 @@ namespace ConsoleUI
 
         private static void ProductDetails(ProductManager productManager)
         {
-            foreach (var product in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+
+            if (result.Success) // Success == true demek
             {
-                Console.WriteLine($"{product.ProductName} -- {product.CategoryName}");
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine($"{product.ProductName} -- {product.CategoryName}");
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
             }
         }
 
         private static void GetByUnitPrice(ProductManager productManager)
         {
             Console.WriteLine("Fiyata göre filtrelenmiş sonuçlar: ");
-            foreach (var product in productManager.GeyByUnitPrice(50, 100))
+            foreach (var product in productManager.GetByUnitPrice(50, 100).Data)
             {
                 Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
             }
@@ -59,7 +68,7 @@ namespace ConsoleUI
         private static void GetByCategoryId(ProductManager productManager)
         {
             Console.WriteLine("Kategoriye göre filtrelenmiş sonuçlar: ");
-            foreach (var product in productManager.GetAllByCategoryId(2))
+            foreach (var product in productManager.GetAllByCategoryId(2).Data)
             {
                 Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
             }
@@ -67,7 +76,7 @@ namespace ConsoleUI
 
         private static void GetAll(ProductManager productManager)
         {
-            foreach (var product in productManager.GetAll())
+            foreach (var product in productManager.GetAll().Data)
             {
                 Console.WriteLine(product.ProductName + " -- " + product.UnitPrice + " TL ");
             }
