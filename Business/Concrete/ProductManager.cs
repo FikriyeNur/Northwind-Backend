@@ -8,20 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-// Wep API: Angular, IOS, Android gibi UI'ların (kullanıcıların) projemizi kullanabilmesi (anlaması) için bu standart yapıyı kullanırız. Wbp API Restful service'dir. Genellikle JSON formatıyla çalışır. Wep API HTTP istekleri üzerinden yapılır. Kullanıcılar bize Request (istekler)'de bulunurlar. Örneğin Ürünleri listele gibi. Bizim ona verdiğimiz yanıt Response (cevap)'dur.
-
 namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _productDal; // Bu noktada direk olarak herhangi bir veritabanıyla bağlantı kurmadan soyut yapıyla bağlantı kurduk. Artık buradan istediğimiz kısma ulaşabiliriz.
+        // Bu noktada direk olarak herhangi bir veritabanıyla bağlantı kurmadan soyut yapıyla bağlantı kurduk. Artık buradan istediğimiz kısma ulaşabiliriz.
+        // Field nesnelerinin default'u private'dır.
+        // _ ile isimlendirmek naming convention'dur. Genellikle field'lar bu şekilde isimlendirilir.
+        IProductDal _productDal;  
 
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
         }
 
-        public IResult Add(Product product) // Bir methot sadece bir sonuç değeri döner. Örneğin liste yada sadece int, string gibi yapılar olur. Tek bir sonuç değeri döner. Birden fazla sonuç döndürmek istersek Encapsulation yapısını kullanırız.
+        // Bir methot sadece bir sonuç değeri döner. Örneğin liste yada sadece int, string gibi yapılar olur. Tek bir sonuç değeri döner. Birden fazla sonuç döndürmek istersek Encapsulation yapısını kullanırız.
+        public IResult Add(Product product) 
         {
             // business codes
             // ürünü eklemeden önceki kodlar yazılır. ürün ekleme koşulları
@@ -45,7 +47,7 @@ namespace Business.Concrete
             // bütün kurallara uyduktan sonra listeyi ekrana döndürebiliriz.
 
             // Her gün saat 22'de sistemi kapatıyoruz.
-            if (DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 10)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime); // data döndürmeyiz. sadece mesaj döndürüyoruz. <List<Product>> default değeri döner oda NULL'dır.
             }
@@ -65,9 +67,10 @@ namespace Business.Concrete
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            if (DateTime.Now.Hour == 2)
+            if (DateTime.Now.Hour == 23)
             {
-                return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime); // data döndürmeyiz. sadece mesaj döndürüyoruz. <List<Product>> default değeri döner oda NULL'dır.
+                // data döndürmeyiz. sadece mesaj döndürüyoruz. <List<Product>> default değeri döner oda NULL'dır.
+                return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
