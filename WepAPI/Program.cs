@@ -1,3 +1,4 @@
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -6,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Business.DependencyResolvers.Autofac;
 
 namespace WepAPI
 {
@@ -18,6 +21,13 @@ namespace WepAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                // ilerde Autofac yerine baþka bir alt yapý kullanmak istersek burda sadece (new AutofacServiceProviderFactory kýsmýný deðiþtirince alt yapýmýz oluþmuþ olur. 
+                // Bunu yapma nedenimiz sistemimize IoC container olarak Autofac alt yapýsýný kullanmasýný söylememiz. 
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureContainer<ContainerBuilder>(builder =>
+                {
+                    builder.RegisterModule(new AutofacBusinessModule());
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

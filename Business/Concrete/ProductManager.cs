@@ -4,39 +4,62 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using ValidationException = FluentValidation.ValidationException;
+using Core.CrossCuttingConcerns.Validation;
 
 namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
+        #region Comments
         // Bu noktada direk olarak herhangi bir veritabanıyla bağlantı kurmadan soyut yapıyla bağlantı kurduk. Artık buradan istediğimiz kısma ulaşabiliriz.
         // Field nesnelerinin default'u private'dır.
-        // _ ile isimlendirmek naming convention'dur. Genellikle field'lar bu şekilde isimlendirilir.
-        IProductDal _productDal;  
+        // _ ile isimlendirmek naming convention'dur. Genellikle field'lar bu şekilde isimlendirilir. 
+        #endregion
+        IProductDal _productDal;
 
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
         }
 
-        // Bir methot sadece bir sonuç değeri döner. Örneğin liste yada sadece int, string gibi yapılar olur. Tek bir sonuç değeri döner. Birden fazla sonuç döndürmek istersek Encapsulation yapısını kullanırız.
-        public IResult Add(Product product) 
+        #region Comment
+        // Bir methot sadece bir sonuç değeri döner. Örneğin liste yada sadece int, string gibi yapılar olur. Tek bir sonuç değeri döner. Birden fazla sonuç döndürmek istersek Encapsulation yapısını kullanırız. 
+        #endregion
+        [ValidationAspect(typeof(ProductValidator))] // Add metodununa ProductValidator'a göre doğrulama işlemi yaptık.
+        public IResult Add(Product product)
         {
-            // business codes
-            // ürünü eklemeden önceki kodlar yazılır. ürün ekleme koşulları
+            #region Validation
+            // validation => örneğin şifre 4 karakterden oluşmalı gibi kodlar doğrulama sınıfına dahildir.
 
-            if (product.ProductName.Length < 2)
-            {
-                // magic strings
-                //return new ErrorResult("Ürün ismi en az 2 karakter olmalıdır!");
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            //var context = new ValidationContext<Product>(product);
+            //ProductValidator productValidator = new ProductValidator();
+            //var result = productValidator.Validate(context);
+            //if (!result.IsValid)
+            //{
+            //    throw new ValidationException(result.Errors);
+            //} 
+
+            // YUKARIDAKİ kodların generic versiyonunu yaptık!!
+            //ValidationTool.Validate(new ProductValidator(), product);
+            #endregion
+
+            #region AOP
+            // Cross Cuttig Concerns : Loglama, Cache, Transcation (performans yönetimi), Authorization (yetkilendirme)            bu kodların hiçbiri tek satır bile olsa business katmanında bu şekilde olmamalı o yüzden bu yapıları AOP ile yapıcaz ve burası temiz kalmış olacak. Clean Code uygulayacağız!!
+
+            #endregion
+
+            // business codes
             _productDal.Add(product);
 
-            //return new SuccessResult(); // bu şekilde mesaj vermeden tek parametreli de kullanabiliriz SuccessResult calss'ını
+            //return new SuccessResult(); // bu şekilde mesaj vermeden tek parametreli de kullanabiliriz SuccessResult class'ını
             return new SuccessResult(Messages.ProductAdded);
         }
 

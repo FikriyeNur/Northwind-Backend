@@ -29,12 +29,15 @@ namespace WepAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Autofac, Ninject, CastleWindsor, StructureMap, LightInject, DryInject -- .NEt projelerinde Ioc Container alt yapýsý kurmamýzý saðlýyorlar. Bu yapýlar AOP ile kod yazma imkaný saðlýyor.
+            // Autofac, Ninject, CastleWindsor, StructureMap, LightInject, DryInject -- .Net projelerinde IoC Container alt yapýsý kurmamýzý saðlýyorlar. Bu yapýlar AOP ile kod yazma imkaný saðlýyor.
             // AOP (Aspect Oriented Programming) -- Bir metodun önünde, sonunda veya hata verdiðinde çalýþan kod parçacýklarýný AOP mimarisi ile yazýyoruz.
+            // Postsharp
 
             services.AddControllers();
-            services.AddSingleton<IProductService, ProductManager>(); // IoC -- Eðer biri constructor'da IProductService tipinde bir baðýmlýlýk oluþturulursa onun için arka planda ProductManager'ý new'le demek.
-            services.AddSingleton<IProductDal, EfProductDal>(); 
+
+            // Business Katmanýnda oluþturduðumuz Autofac yapýsý bu IoC'nin karþýlýðýdýr.
+            //services.AddSingleton<IProductService, ProductManager>(); // IoC -- Eðer biri constructor'da IProductService tipinde bir baðýmlýlýk oluþturulursa onun için arka planda ProductManager'ý new'le demek.
+            //services.AddSingleton<IProductDal, EfProductDal>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
