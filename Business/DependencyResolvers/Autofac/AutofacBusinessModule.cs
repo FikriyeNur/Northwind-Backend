@@ -18,7 +18,7 @@ namespace Business.DependencyResolvers.Autofac
         // Uygulama hayata geçerken kısaca uygulamayı çalıştırdığımız zaman çalışan metot.
         protected override void Load(ContainerBuilder builder)
         {
-            // eğer birisi constructor'da IProductService isterse ProductManager'ı register et yani ProductManager instance'ını ver demek. WepAPI startup içinde oluşturduğumuz yapıyla aynı. Tek fark orda .Net IoC kullanıyorduk burda Autofac sisteminikullanıyoruz.
+            // eğer birisi constructor'da IProductService isterse ProductManager'ı register et yani ProductManager instance'ını ver demek. WepAPI startup içinde oluşturduğumuz yapıyla aynı. Tek fark orda .Net IoC kullanıyorduk burda Autofac sistemini kullanıyoruz.
             // SingleInstance ile tek bir instance alıp her yerde onu kullanırız. Referans tip herkese aynı referansı verir.
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
