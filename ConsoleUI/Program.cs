@@ -2,6 +2,7 @@
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using System;
+using Business.CCS;
 
 namespace ConsoleUI
 {
@@ -22,16 +23,16 @@ namespace ConsoleUI
             #endregion
 
             #region Entity Framework
-            //GetAll(productManager);
-            //GetByCategoryId(productManager);
-            //GetByUnitPrice(productManager);
+            ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+            OrderManager orderManager = new OrderManager(new EfOrderDal());
 
-            //OrderTest();
+            GetAll(productManager);
+            GetByCategoryId(productManager);
+            GetByUnitPrice(productManager);
 
-            //CategoryTest();
-
-            ProductManager productManager = new ProductManager(new EfProductDal());
-
+            //OrderTest(categoryManager);
+            //CategoryTest(orderManager);
             ProductDetails(productManager);
 
             #endregion
@@ -82,19 +83,17 @@ namespace ConsoleUI
             }
         }
 
-        private static void OrderTest()
+        private static void OrderTest(OrderManager orderManager)
         {
-            OrderManager orderManager = new OrderManager(new EfOrderDal());
-            foreach (var order in orderManager.GetAll())
+            foreach (var order in orderManager.GetAll().Data)
             {
                 Console.WriteLine($"{order.OrderId} {order.ShipCity}");
             }
         }
 
-        private static void CategoryTest()
+        private static void CategoryTest(CategoryManager categoryManager)
         {
-            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
-            foreach (var category in categoryManager.GetAll())
+            foreach (var category in categoryManager.GetAll().Data)
             {
                 Console.WriteLine($"{category.CategoryId} -- {category.CategoryName}");
             }

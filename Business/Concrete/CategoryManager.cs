@@ -4,27 +4,26 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Results;
 
 namespace Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
         ICategoryDal _categoryDal; // Bağımlılığımızı minimize ediyoruz. ve bunu constructor injection ile yapıyoruz.
-
         public CategoryManager(ICategoryDal categoryDal)
         {
             _categoryDal = categoryDal;
         }
 
-        public List<Category> GetAll()
+        public IDataResult<List<Category>> GetAll()
         {
-            // iş kodları
-            return _categoryDal.GettAll();
+           return new SuccessDataResult<List<Category>>(_categoryDal.GettAll());
         }
 
-        public Category GetById(int categoryId)
+        public IDataResult<Category> GetById(int categoryId)
         {
-            return _categoryDal.Get(c => c.CategoryId == categoryId);
+            return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryId == categoryId));
         }
     }
 }
