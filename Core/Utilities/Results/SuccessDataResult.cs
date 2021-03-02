@@ -23,7 +23,7 @@ namespace Core.Utilities.Results
         }
 
         // az kullanılan versiyon sadece data tipinin default değeri döner.
-        public SuccessDataResult():base(default, true) // hiç bir şey vermediğimiz return türü.
+        public SuccessDataResult() :base(default, true) // hiç bir şey vermediğimiz return türü.
         {
 
         }

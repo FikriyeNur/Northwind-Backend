@@ -4,17 +4,14 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using Business.CCS;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -39,6 +36,9 @@ namespace Business.Concrete
         #region Comment
         // Bir methot sadece bir sonuç değeri döner. Örneğin liste yada sadece int, string gibi yapılar olur. Tek bir sonuç değeri döner. Birden fazla sonuç döndürmek istersek Encapsulation yapısını kullanırız. 
         #endregion
+        // Encryption, Hashing -- bir datayı karşı taraf okuyamasın diye yapılan güvenlik işlemleridir. (örneğin paraloları)
+        // Claim -- admin, product.add, editör, moderatör gibi yapılar bizim için Claim Bazlı Kimlik doğrulama yöntemleridir.
+        [SecuredOperation("product.add, admin")] // operasyon bazlı kimlik doğrulama yöntemi
         [ValidationAspect(typeof(ProductValidator))] // Add metodununa ProductValidator'a göre doğrulama işlemi yaptık.
         public IResult Add(Product product)
         {
@@ -84,13 +84,23 @@ namespace Business.Concrete
                 CheckIfProductNameExists(product.ProductName),
                 CheckIfCategoryLimitExceded());
 
-            if (result !=null)
+            if (result != null)
             {
                 return result;
             }
 
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductUpdated);
+        }
+
+        public IResult Delete(Product product)
+        {
+            if (product != null)
+            {
+                _productDal.Delete(product);
+                return new SuccessResult(Messages.ProductDeleted);
+            }
+            return new ErrorResult();
         }
 
         public IDataResult<List<Product>> GetAll()
