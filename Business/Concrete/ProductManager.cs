@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transection;
 
 namespace Business.Concrete
 {
@@ -40,6 +43,7 @@ namespace Business.Concrete
         // Claim -- admin, product.add, editör, moderatör gibi yapılar bizim için Claim Bazlı Kimlik doğrulama yöntemleridir.
         [SecuredOperation("product.add, admin")] // operasyon bazlı kimlik doğrulama yöntemi
         [ValidationAspect(typeof(ProductValidator))] // Add metodununa ProductValidator'a göre doğrulama işlemi yaptık.
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             #region Validation
@@ -78,6 +82,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")] // IProductService'de içerisinde Get bulunan tüm keyleri iptal eder. Yani ürün güncellerken tüm cache'leri de sildik.
         public IResult Update(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductCountOfCategory(product.CategoryId),
@@ -103,6 +108,20 @@ namespace Business.Concrete
             return new ErrorResult();
         }
 
+        // uygulamalarda tutarlılığı korumak için yapılan yöntem.
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+            Add(product);
+            if (product.UnitPrice < 10)
+            {
+                throw new Exception("");
+            }
+            Add(product);
+            return null;
+        }
+
+        [CacheAspect]  // key, value --> cache'e verdiğimiz isim
         public IDataResult<List<Product>> GetAll()
         {
             // iş kodları ..
@@ -123,6 +142,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GettAll(p => p.CategoryId == id));
         }
 
+        [CacheAspect]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));

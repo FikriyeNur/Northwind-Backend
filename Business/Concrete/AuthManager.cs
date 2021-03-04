@@ -8,6 +8,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Aspects.Performance;
 
 namespace Business.Concrete
 {
@@ -39,6 +40,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [PerformanceAspect(1)] // method'un çalışması 5 sn yi geçerse sistem bizi uyarır.
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
