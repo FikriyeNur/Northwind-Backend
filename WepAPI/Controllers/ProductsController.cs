@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WepAPI.Controllers
@@ -32,14 +33,15 @@ namespace WepAPI.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
+            Thread.Sleep(5000);
             // Dependency Chain -- Bağımlılık zinciri oldu! 
             //IProductService productService = new ProductManager(new EfProductDal());
             var result = _productService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet("getbyid")]

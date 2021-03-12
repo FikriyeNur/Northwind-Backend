@@ -35,6 +35,8 @@ namespace WepAPI
             //services.AddSingleton<IProductService, ProductManager>(); // IoC -- Eðer biri constructor'da IProductService tipinde bir baðýmlýlýk oluþturulursa onun için arka planda ProductManager'ý new'le demek.
             //services.AddSingleton<IProductDal, EfProductDal>();
 
+            services.AddCors();
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -42,7 +44,7 @@ namespace WepAPI
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true, 
+                        ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidIssuer = tokenOptions.Issuer,
@@ -62,6 +64,9 @@ namespace WepAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // bu adresten gelen isteklere izin verdik. Frontend'i baþka port da açarsak çalýþmaz sadece bu adrese izin verdik.
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
