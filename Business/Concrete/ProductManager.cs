@@ -41,7 +41,7 @@ namespace Business.Concrete
         #endregion
         // Encryption, Hashing -- bir datayı karşı taraf okuyamasın diye yapılan güvenlik işlemleridir. (örneğin paraloları)
         // Claim -- admin, product.add, editör, moderatör gibi yapılar bizim için Claim Bazlı Kimlik doğrulama yöntemleridir.
-        [SecuredOperation("product.add, admin")] // operasyon bazlı kimlik doğrulama yöntemi
+        [SecuredOperation("admin, product.add")] // operasyon bazlı kimlik doğrulama yöntemi
         [ValidationAspect(typeof(ProductValidator))] // Add metodununa ProductValidator'a göre doğrulama işlemi yaptık.
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
@@ -129,7 +129,7 @@ namespace Business.Concrete
             // bütün kurallara uyduktan sonra listeyi ekrana döndürebiliriz.
 
             // Her gün saat 22'de sistemi kapatıyoruz.
-            if (DateTime.Now.Hour == 10)
+            if (DateTime.Now.Hour == 7)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime); // data döndürmeyiz. sadece mesaj döndürüyoruz. <List<Product>> default değeri döner oda NULL'dır.
             }

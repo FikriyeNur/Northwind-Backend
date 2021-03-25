@@ -27,6 +27,6 @@ namespace Business.Constants
         internal static string PasswordError = "Hatalı şifre!!";
         internal static string SuccessfulLogin = "Sisteme giriş başarılı";
         internal static string UserAlreadyExists = "Bu kullanıcı zaten mevcut!";
-        internal static string AccessTokenCreated = "Access token başarıyla oluşturuldu.";
+        internal static string AccessTokenCreated = "Hoşgeldiniz :)";
     }
 }

@@ -1,0 +1,14 @@
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\DataAccess.deps.json
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\DataAccess.dll
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\DataAccess.pdb
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\Core.dll
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\Entities.dll
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\Core.pdb
+D:\Yazılım Kampı\FinalProject\DataAccess\bin\Debug\netstandard2.0\Entities.pdb
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.csprojAssemblyReference.cache
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.AssemblyInfoInputs.cache
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.AssemblyInfo.cs
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.csproj.CoreCompileInputs.cache
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.csproj.CopyComplete
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.dll
+D:\Yazılım Kampı\FinalProject\DataAccess\obj\Debug\netstandard2.0\DataAccess.pdb

@@ -65,6 +65,8 @@ namespace WepAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
+
             // bu adresten gelen isteklere izin verdik. Frontend'i baþka port da açarsak çalýþmaz sadece bu adrese izin verdik.
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
